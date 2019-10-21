@@ -1,10 +1,10 @@
 package proxies
 
 import (
-	"Plataformas-Exercicio03/RobertoMiddleware/aux"
-	"Plataformas-Exercicio03/RobertoMiddleware/distribution/clientproxy"
-	"Plataformas-Exercicio03/RobertoMiddleware/distribution/requestor"
-	"Plataformas-Exercicio03/util"
+	"ConversorMoedasApp/util"
+	"RMid/aux"
+	"RMid/distribution/clientproxy"
+	"RMid/distribution/requestor"
 	"reflect"
 )
 

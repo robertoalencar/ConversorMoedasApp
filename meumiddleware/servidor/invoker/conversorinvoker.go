@@ -1,11 +1,11 @@
 package invoker
 
 import (
-	"Plataformas-Exercicio03/ConversorMoedasApp/impl"
-	"Plataformas-Exercicio03/RobertoMiddleware/distribution/marshaller"
-	"Plataformas-Exercicio03/RobertoMiddleware/distribution/miop"
-	"Plataformas-Exercicio03/RobertoMiddleware/infrastructure/srh"
-	"Plataformas-Exercicio03/util"
+	"ConversorMoedasApp/impl"
+	"ConversorMoedasApp/util"
+	"RMid/distribution/marshaller"
+	"RMid/distribution/miop"
+	"RMid/infrastructure/srh"
 )
 
 type ConversorInvoker struct{}

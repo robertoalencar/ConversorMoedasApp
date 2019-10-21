@@ -1,9 +1,9 @@
 package main
 
 import (
-	"Plataformas-Exercicio03/ConversorMoedasApp/meumiddleware/cliente/proxies"
-	"Plataformas-Exercicio03/ConversorMoedasApp/meumiddleware/servidor/invoker"
-	"Plataformas-Exercicio03/RobertoMiddleware/services/naming/proxy"
+	"ConversorMoedasApp/meumiddleware/cliente/proxies"
+	"ConversorMoedasApp/meumiddleware/servidor/invoker"
+	"RMid/services/naming/proxy"
 	"fmt"
 )
 
