@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package conversor;
+
+service Greeter {
+    rpc converter (Request) returns (Reply) {}
+}
+
+// Mensagem de Request
+message Request {
+  string MoedaDestino = 1;
+  float Valor = 2;
+}
+
+//Mensagem de resposta
+message Reply {
+  float resultado = 1;
+}

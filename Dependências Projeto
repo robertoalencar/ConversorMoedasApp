@@ -1,0 +1,23 @@
+
+gRPC-Go:
+
+   go get -u google.golang.org/grpc
+
+
+Protocol Buffer:
+
+   go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+   protoc --go_out=plugins=grpc:. *.proto 
+
+
+RabbitMQ:
+
+   go get github.com/streadway/amqp
+
+   sudo apt-get update -y
+
+   sudo apt-get install rabbitmq-server -y --fix-missing
+
+   sudo service rabbitmq-server status
+   sudo service rabbitmq-server stop
+   sudo service rabbitmq-server start
