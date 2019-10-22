@@ -9,7 +9,7 @@ import (
 )
 
 type ConversorProxy struct {
-	Proxy clientproxy.ConversorProxy
+	Proxy clientproxy.ClientProxy
 }
 
 func NewConversorProxy() ConversorProxy {
