@@ -22,7 +22,7 @@ func ExecuteExperiment() {
 	var moedaDestino string = "dolar"
 	var valor float64 = 10.0
 
-	for i = 0; i < util.TAMANHO_AMOSTRA; i++ {
+	for i = 0; i < util.QTD_EXECUCOES_EXPERIMENTO; i++ {
 
 		t1 := time.Now()
 

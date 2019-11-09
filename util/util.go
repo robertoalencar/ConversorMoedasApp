@@ -4,7 +4,7 @@ import (
 	"log"
 )
 
-const TAMANHO_AMOSTRA = 11000
+const QTD_EXECUCOES_EXPERIMENTO = 10
 const HOST = "127.0.0.1"
 const PORTA = 12345
 const MIOP_REQUEST = 1

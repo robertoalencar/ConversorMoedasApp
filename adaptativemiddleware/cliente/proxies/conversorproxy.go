@@ -4,7 +4,8 @@ import (
 	"ConversorMoedasApp/util"
 	"RAMid/aux"
 	"RAMid/distribution/clientproxy"
-	"RAMid/distribution/requestor"
+	"RAMid/plugins"
+	"plugin"
 	"reflect"
 )
 
@@ -32,9 +33,22 @@ func (proxy ConversorProxy) Converter(moedaDestino string, valor float64) float6
 	request := aux.Request{Op: "Converter", Params: params}
 	inv := aux.Invocation{Host: proxy.Proxy.Host, Port: proxy.Proxy.Port, Request: request}
 
-	// invoke requestor
-	req := requestor.Requestor{}
-	ter := req.Invoke(inv).([]interface{})
+	//Carrega o arquivo do componente
+	manager := plugins.Manager{}
+	componente, err := plugin.Open(manager.ObterComponente("requestor"))
+	util.ChecaErro(err, "Falha ao carregar o arquivo do componente")
+
+	funcao, err := componente.Lookup("Transmitir")
+	util.ChecaErro(err, "Falha ao carregar a função do componente")
+
+	Transmitir := funcao.(func(chan interface{}))
+
+	ch := make(chan interface{})
+	go Transmitir(ch)
+
+	ch <- inv
+	retorno := <-ch
+	ter := retorno.([]interface{})
 
 	return ter[0].(float64)
 }
