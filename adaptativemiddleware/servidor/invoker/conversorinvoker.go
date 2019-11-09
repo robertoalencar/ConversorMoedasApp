@@ -19,7 +19,7 @@ func NewConversorInvoker() ConversorInvoker {
 
 func (ConversorInvoker) Invoke() {
 
-	srhImpl := srh.SRH{ServerHost: "localhost", ServerPort: util.PORTA}
+	srhImpl := srh.SRH{ServerHost: util.SERVER_HOST, ServerPort: util.SERVER_PORT}
 	marshallerImpl := marshaller.Marshaller{}
 	miopPacketReply := miop.Packet{}
 	replParams := make([]interface{}, 1)
