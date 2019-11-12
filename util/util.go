@@ -11,6 +11,7 @@ const MIOP_REQUEST = 1
 
 const ID_COMPONENTE_REQUESTOR = "requestor"
 const ID_MARSHALLER = "marshaller"
+const ID_COMPONENTE_SRH = "srh"
 
 type Request struct {
 	MoedaDestino string

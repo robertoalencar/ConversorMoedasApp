@@ -4,7 +4,6 @@ import (
 	"ConversorMoedasApp/impl"
 	"ConversorMoedasApp/util"
 	"RAMid/distribution/miop"
-	"RAMid/infrastructure/srh"
 	"RAMid/plugins"
 	"plugin"
 )
@@ -20,11 +19,23 @@ func NewConversorInvoker() ConversorInvoker {
 
 func (ConversorInvoker) Invoke() {
 
-	srhImpl := srh.SRH{ServerHost: util.SERVER_HOST, ServerPort: util.SERVER_PORT}
+	manager := plugins.Manager{}
+
+	srhInst, err := plugin.Open(manager.ObterComponente(util.ID_COMPONENTE_SRH))
+	util.ChecaErro(err, "Falha ao carregar o arquivo do componente")
+
+	funcReceive, err := srhInst.Lookup("Receive")
+	util.ChecaErro(err, "Falha ao carregar a função do componente")
+
+	Receive := funcReceive.(func(chan [3]interface{}))
+
+	funcSend, err := srhInst.Lookup("Send")
+	util.ChecaErro(err, "Falha ao carregar a função do componente")
+
+	Send := funcSend.(func(chan []byte))
+
 	miopPacketReply := miop.Packet{}
 	replParams := make([]interface{}, 1)
-
-	manager := plugins.Manager{}
 
 	marshallerInst, err := plugin.Open(manager.ObterComponente(util.ID_MARSHALLER))
 	util.ChecaErro(err, "Falha ao carregar o arquivo do componente")
@@ -37,8 +48,20 @@ func (ConversorInvoker) Invoke() {
 	conversorImpl := impl.Conversor{}
 
 	for {
+
 		// receive data
-		rcvMsgBytes := srhImpl.Receive()
+		chReceiveSrh := make(chan [3]interface{})
+		go Receive(chReceiveSrh)
+
+		var parametros [3]interface{}
+		parametros[0] = util.SERVER_HOST
+		parametros[1] = util.SERVER_PORT
+
+		// send request packet and receive reply packet
+		chReceiveSrh <- parametros
+		retornoReceive := <-chReceiveSrh
+
+		rcvMsgBytes := retornoReceive[2].([]byte)
 
 		// unmarshall
 		chUnmarshall := make(chan interface{})
@@ -81,6 +104,8 @@ func (ConversorInvoker) Invoke() {
 		msgToClientBytes := retornoMarshall.([]byte)
 
 		// send reply
-		srhImpl.Send(msgToClientBytes)
+		chSendSrh := make(chan []byte)
+		go Send(chSendSrh)
+		chSendSrh <- msgToClientBytes
 	}
 }
