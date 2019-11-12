@@ -38,13 +38,13 @@ func (proxy ConversorProxy) Converter(moedaDestino string, valor float64) float6
 	componente, err := plugin.Open(manager.ObterComponente("requestor"))
 	util.ChecaErro(err, "Falha ao carregar o arquivo do componente")
 
-	funcao, err := componente.Lookup("Transmitir")
+	funcao, err := componente.Lookup("Invoke")
 	util.ChecaErro(err, "Falha ao carregar a função do componente")
 
-	Transmitir := funcao.(func(chan interface{}))
+	Invoke := funcao.(func(chan interface{}))
 
 	ch := make(chan interface{})
-	go Transmitir(ch)
+	go Invoke(ch)
 
 	ch <- inv
 	retorno := <-ch
