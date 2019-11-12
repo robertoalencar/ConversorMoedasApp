@@ -3,9 +3,10 @@ package invoker
 import (
 	"ConversorMoedasApp/impl"
 	"ConversorMoedasApp/util"
-	"RAMid/distribution/marshaller"
 	"RAMid/distribution/miop"
 	"RAMid/infrastructure/srh"
+	"RAMid/plugins"
+	"plugin"
 )
 
 type ConversorInvoker struct{}
@@ -20,9 +21,18 @@ func NewConversorInvoker() ConversorInvoker {
 func (ConversorInvoker) Invoke() {
 
 	srhImpl := srh.SRH{ServerHost: util.SERVER_HOST, ServerPort: util.SERVER_PORT}
-	marshallerImpl := marshaller.Marshaller{}
 	miopPacketReply := miop.Packet{}
 	replParams := make([]interface{}, 1)
+
+	manager := plugins.Manager{}
+
+	marshallerInst, err := plugin.Open(manager.ObterComponente(util.ID_MARSHALLER))
+	util.ChecaErro(err, "Falha ao carregar o arquivo do componente")
+
+	funcUnmarshall, err := marshallerInst.Lookup("Unmarshall")
+	util.ChecaErro(err, "Falha ao carregar a função do componente")
+
+	Unmarshall := funcUnmarshall.(func(chan interface{}))
 
 	conversorImpl := impl.Conversor{}
 
@@ -31,7 +41,13 @@ func (ConversorInvoker) Invoke() {
 		rcvMsgBytes := srhImpl.Receive()
 
 		// unmarshall
-		miopPacketRequest := marshallerImpl.Unmarshall(rcvMsgBytes)
+		chUnmarshall := make(chan interface{})
+		go Unmarshall(chUnmarshall)
+
+		chUnmarshall <- rcvMsgBytes
+		retornoUnmarshall := <-chUnmarshall
+		miopPacketRequest := retornoUnmarshall.(miop.Packet)
+
 		operation := miopPacketRequest.Bd.ReqHeader.Operation
 
 		// demux request
@@ -51,7 +67,18 @@ func (ConversorInvoker) Invoke() {
 		miopPacketReply = miop.Packet{Hdr: header, Bd: body}
 
 		// marshall reply
-		msgToClientBytes := marshallerImpl.Marshall(miopPacketReply)
+		funcMarshall, err := marshallerInst.Lookup("Marshall")
+		util.ChecaErro(err, "Falha ao carregar a função do componente")
+
+		Marshall := funcMarshall.(func(chan interface{}))
+
+		chMarshaller := make(chan interface{})
+		go Marshall(chMarshaller)
+
+		// serialise request packet
+		chMarshaller <- miopPacketReply
+		retornoMarshall := <-chMarshaller
+		msgToClientBytes := retornoMarshall.([]byte)
 
 		// send reply
 		srhImpl.Send(msgToClientBytes)

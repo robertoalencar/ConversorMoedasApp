@@ -35,7 +35,7 @@ func (proxy ConversorProxy) Converter(moedaDestino string, valor float64) float6
 
 	//Carrega o arquivo do componente
 	manager := plugins.Manager{}
-	componente, err := plugin.Open(manager.ObterComponente("requestor"))
+	componente, err := plugin.Open(manager.ObterComponente(util.ID_COMPONENTE_REQUESTOR))
 	util.ChecaErro(err, "Falha ao carregar o arquivo do componente")
 
 	funcao, err := componente.Lookup("Invoke")
