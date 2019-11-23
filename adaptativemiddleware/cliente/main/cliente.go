@@ -33,7 +33,7 @@ func ExecuteExperiment() {
 		x := t2.Sub(t1)
 		arquivo.WriteString(strconv.FormatInt(x.Microseconds(), 10) + "\n")
 
-		time.Sleep(1 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 
 }
