@@ -31,7 +31,7 @@ func (s *servidorConversor) Converter(ctx context.Context, in *conversor.Request
 
 func main() {
 
-	conn, err := net.Listen("tcp", ":"+strconv.Itoa(util.PORTA))
+	conn, err := net.Listen("tcp", ":"+strconv.Itoa(util.SERVER_PORT))
 	util.ChecaErro(err, "Não foi possível criar o listener")
 
 	servidor := grpc.NewServer()

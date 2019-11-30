@@ -18,7 +18,7 @@ func main() {
 	var i int32
 
 	// Estabelece conexão com o servidor
-	conn, err := grpc.Dial("localhost"+":"+strconv.Itoa(util.PORTA), grpc.WithInsecure())
+	conn, err := grpc.Dial(util.SERVER_HOST+":"+strconv.Itoa(util.SERVER_PORT), grpc.WithInsecure())
 	util.ChecaErro(err, "Não foi possível se conectar ao servidor")
 	defer conn.Close()
 
@@ -34,7 +34,7 @@ func main() {
 	var moedaDestino string = "dolar"
 	var valor float32 = 10.0
 
-	for i = 0; i < util.TAMANHO_AMOSTRA; i++ {
+	for i = 0; i < util.QTD_EXECUCOES_EXPERIMENTO; i++ {
 
 		t1 := time.Now()
 

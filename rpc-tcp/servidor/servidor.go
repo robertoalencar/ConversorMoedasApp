@@ -19,7 +19,7 @@ func servidorRPCTCP() {
 	server.RegisterName("Conversor", conversor)
 
 	// cria um listen rpc-sender
-	l, err := net.Listen("tcp", ":"+strconv.Itoa(util.PORTA))
+	l, err := net.Listen("tcp", ":"+strconv.Itoa(util.SERVER_PORT))
 	util.ChecaErro(err, "Servidor não está pronto")
 
 	// aguarda por chamadas

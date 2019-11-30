@@ -17,8 +17,8 @@ func NewConversorProxy() ConversorProxy {
 	p := new(ConversorProxy)
 
 	p.Proxy.TypeName = reflect.TypeOf(ConversorProxy{}).String()
-	p.Proxy.Host = "localhost"
-	p.Proxy.Port = util.PORTA
+	p.Proxy.Host = util.SERVER_HOST
+	p.Proxy.Port = util.SERVER_PORT
 
 	return *p
 }
