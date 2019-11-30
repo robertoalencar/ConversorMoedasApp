@@ -4,7 +4,7 @@ import (
 	"log"
 )
 
-const QTD_EXECUCOES_EXPERIMENTO = 11000
+const QTD_EXECUCOES_EXPERIMENTO = 50
 const SERVER_HOST = "127.0.0.1"
 const SERVER_PORT = 12345
 const MIOP_REQUEST = 1
